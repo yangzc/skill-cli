@@ -1,0 +1,32 @@
+{
+  "name": "skm",
+  "version": "0.2.0",
+  "description": "Namespace-based skill manager CLI: each namespace is a git repository; switch namespaces and add / remove / list / fetch skills anywhere.",
+  "type": "module",
+  "bin": {
+    "skm": "bin/skm.js"
+  },
+  "exports": {
+    ".": "./src/commands.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node bin/skm.js",
+    "help": "node bin/skm.js help"
+  },
+  "keywords": [
+    "skill",
+    "skills",
+    "git",
+    "cli",
+    "agent"
+  ],
+  "license": "MIT"
+}
