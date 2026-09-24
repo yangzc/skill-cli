@@ -206,13 +206,13 @@ async function removeLinks(target, name) {
 function pickNamespace(cfg, ctx, override) {
   const name = override || nsFlag(ctx.flags) || cfg.current;
   if (!name) {
-    fail('no namespace selected.\n  add one:   skm ns add heygen-com/hyperframes\n  or pick:   skm ns use <name>');
+    fail('no namespace selected.\n  add one:   skm ns add <name> https://github.com/owner/repo.git\n  or pick:   skm ns use <name>');
   }
   const entry = cfg.namespaces[name];
   if (!entry) {
     const available = namespaceNames(cfg);
     fail(
-      `unknown namespace: ${name}${available.length ? `\n  available: ${available.join(', ')}` : '\n  add one: skm ns add <url>'}`,
+      `unknown namespace: ${name}${available.length ? `\n  available: ${available.join(', ')}` : '\n  add one: skm ns add <name> <git-url>'}`,
     );
   }
   return { name, entry };
@@ -340,7 +340,7 @@ async function cmdNs(sub, ctx) {
     }
     if (!names.length) {
       log.raw(color.dim('no namespaces yet. add one:'));
-      log.raw('  skm ns add heygen-com/hyperframes');
+      log.raw('  skm ns add <name> https://github.com/owner/repo.git');
       return;
     }
     const target = resolveTarget(ctx);
@@ -567,7 +567,7 @@ async function cmdLs(ctx) {
   const filterNs = nsFlag(ctx.flags);
   const nsList = allNs ? namespaceNames(cfg) : [filterNs || cfg.current].filter(Boolean);
   if (!nsList.length) {
-    fail('no namespace selected.\n  add one:   skm ns add heygen-com/hyperframes\n  or list:   skm ns ls');
+    fail('no namespace selected.\n  add one:   skm ns add <name> https://github.com/owner/repo.git\n  or list:   skm ns ls');
   }
 
   const collected = [];
@@ -1211,8 +1211,8 @@ ${color.bold('USAGE')}
   skm <command> [args] [flags]
 
 ${color.bold('NAMESPACE')}
-  skm ns add <url>          add a namespace (name auto-derived from repo)
   skm ns add <name> <url>   add with an explicit name
+  skm ns add <url>          add a namespace (name auto-derived from repo)
   skm ns ls                 list namespaces (* = current)
   skm ns use <name>         switch current namespace
   skm ns rm <name>          remove a namespace [--purge to drop cache]
@@ -1222,13 +1222,11 @@ ${color.bold('NAMESPACE')}
   skm ns fetch [name]       refresh a namespace (git fetch only)
 
 ${color.bold('GIT ADDRESS  (ns add / ns set-url)')}
-  owner/repo                -> https://github.com/owner/repo.git   (GitHub assumed)
-  https://host/group/repo.git                                      (any host/scheme)
-  git@host:group/repo.git                                          (ssh)
-  /abs, ./rel, ~/path                                              (local repository)
+  https://host/group/repo.git      full URL, any host / scheme
+  git@host:group/repo.git          ssh
+  /abs, ./rel, ~/path              local repository
   --ref <ref>               pin to a branch / tag / commit   (ns add only)
   No name given? it is the last path segment: .../hyperframes.git -> hyperframes
-  For gitlab/self-hosted always give the full URL (owner/repo only expands to GitHub).
   Private repos use your normal git credentials (ssh-agent / credential helper).
   skm reuses one ssh connection per run (ControlPersist=10m), so a passphrase is
   asked once per push, not twice. SKM_NO_SSH_MUX=1 disables it.
@@ -1272,9 +1270,9 @@ ${color.bold('SHORTCUTS')}
     skm info hyperframes:media-use
 
 ${color.bold('EXAMPLES')}
-  skm ns add heygen-com/hyperframes
-  skm ns add vercel-labs/skills
-  skm ns use hyperframes
+  skm ns add main https://github.com/heygen-com/hyperframes.git
+  skm ns add vercel https://github.com/vercel-labs/skills.git
+  skm ns use main
   skm ls -v
   skm install hyperframes-core media-use
   skm ns use vercel && skm ls

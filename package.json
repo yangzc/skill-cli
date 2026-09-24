@@ -1,7 +1,16 @@
 {
-  "name": "skm",
+  "name": "@yangzc/skm",
   "version": "0.2.0",
   "description": "Namespace-based skill manager CLI: each namespace is a git repository; switch namespaces and add / remove / list / fetch skills anywhere.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yangzc/skill-cli.git"
+  },
+  "author": "yangzc",
+  "bugs": {
+    "url": "https://github.com/yangzc/skill-cli/issues"
+  },
+  "homepage": "https://github.com/yangzc/skill-cli#readme",
   "type": "module",
   "bin": {
     "skm": "bin/skm.js"

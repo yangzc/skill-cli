@@ -89,7 +89,13 @@ export async function git(args, opts = {}) {
 
 const URL_SCHEME = /^(https?|git|ssh|file):\/\//i;
 
-/** Accept `owner/repo`, full URL, `git@host:owner/repo.git` or a local path. */
+/**
+ * Resolve a source to a concrete git address. Accepts:
+ *  - a full URL (https://, git://, ssh://, file://) or a `git@host:path` scp-style URL
+ *  - a local filesystem path (/abs, ./rel, ../rel, ~)
+ * Anything else (e.g. a bare `owner/repo`) is rejected — we do NOT auto-expand to
+ * GitHub, because that silently forces HTTPS and a specific host.
+ */
 export function normalizeSource(input, cwd = process.cwd()) {
   const raw = String(input).trim().replace(/^["']|["']$/g, '');
   if (!raw) throw new Error('empty source');
@@ -97,9 +103,9 @@ export function normalizeSource(input, cwd = process.cwd()) {
   if (raw.startsWith('/') || raw.startsWith('./') || raw.startsWith('../') || raw.startsWith('~')) {
     return path.resolve(cwd, expandHome(raw));
   }
-  const ownerRepo = raw.replace(/\.git$/, '');
-  if (/^[\w.-]+\/[\w.-]+$/.test(ownerRepo)) return `https://github.com/${ownerRepo}.git`;
-  throw new Error(`cannot resolve source: ${input}`);
+  throw new Error(
+    `cannot resolve source: ${input}\n  pass a full git URL (https://…, git@host:…, ssh://…) or a local path`,
+  );
 }
 
 export function sourceLabel(url) {
