@@ -1,0 +1,27 @@
+name: Release
+
+# 打 tag 即发布：git tag v0.2.0 && git push --tags
+on:
+  push:
+    tags:
+      - 'v*'
+
+# id-token: write 是 npm 可信发布(OIDC)必需的，无需任何 npm token
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+
+      # 走 npm 可信发布：自动用 GitHub OIDC 令牌鉴权，不需要 NODE_AUTH_TOKEN / OTP
+      - name: Publish to npm (provenance)
+        run: npm publish --provenance --access public

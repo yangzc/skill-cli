@@ -1,5 +1,7 @@
 # skm — 基于命名空间的 skill 管理器
 
+[![npm](https://img.shields.io/npm/v/@yangzc106/skm.svg)](https://www.npmjs.com/package/@yangzc106/skm)
+
 `skm` 用**命名空间**管理 skill：**一个命名空间 = 一个 git 仓库**；skill 就是仓库里含 `SKILL.md` 的目录。装好后 `skm` 是个普通命令，可在**任意文件夹**下执行。
 
 > 设计目标：**保证有用 + 最少化**。没有第三方依赖，零构建，纯 Node + 系统 git。
@@ -22,14 +24,14 @@ skm --help
 
 **前置条件**：Node ≥ 18、系统已装 `git`（skm 全程走系统 git）。
 
-### 方式二：通过 npm（发布后）
+### 方式二：通过 npm（已发布）
 
 ```bash
-npm install -g skm      # 全局命令
-npx skm <命令>          # 免安装即用
+npm install -g @yangzc106/skm      # 全局命令
+npx @yangzc106/skm <命令>          # 免安装即用
 ```
 
-> 包名若改为作用域包（如 `@yangzc/skm`），安装命令相应变为 `npm install -g @yangzc/skm`，但命令名仍是 `skm`（由 `bin` 字段决定）。
+> 包已发布在 npm：https://www.npmjs.com/package/@yangzc106/skm ，命令名仍是 `skm`（由 `bin` 字段决定，与包名无关）。
 
 ---
 
